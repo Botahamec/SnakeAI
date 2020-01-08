@@ -11,7 +11,7 @@ var body : PoolVector2Array = PoolVector2Array([Vector2(4, 2), Vector2(3, 2)])
 var colors: PoolColorArray = PoolColorArray([Color(0, 1, 0)])
 var time: float = 0
 var direction
-var dead: bool = false
+var dead: bool
 
 const frame_length: float = 0.2 # controls speed of the game
 const board_dimensions : Vector2 = Vector2(8, 4)
@@ -19,6 +19,7 @@ const block_size : int = 50
 
 func _ready():
 	direction = Direction.Right
+	dead = false
 
 # draws the snake
 func _draw():
@@ -54,21 +55,23 @@ func check_death():
 	if body[0].y >= board_dimensions.y or body[0].y < 0: dead = true
 	for i in range(1, body.size()):
 		if body[i] == body[0]: dead = true
+	if body.size() == board_dimensions.x * board_dimensions.y:
+		dead = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
 	# checks to see if the frame should be advanced
-	if dead: return
-	time += delta
-	if time < frame_length: return
-	time = 0
-	
-	move()
-	check_death()
-	emit_signal("moved")
-	
-	update() # draws to the screen
+	if not dead:
+		time += delta
+		if time > frame_length:
+			time = 0
+			
+			move()
+			check_death()
+			emit_signal("moved")
+			
+			update() # draws to the screen
 
 func _input(input):
 	if input is InputEventKey:

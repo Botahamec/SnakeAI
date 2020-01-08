@@ -13,6 +13,7 @@ func check():
 	var apple_pos = get_child(1).pos
 	if snake_pos == apple_pos:
 		get_child(1).rand_position()
+		get_child(3).increment()
 		return false
 	else: return true
 
