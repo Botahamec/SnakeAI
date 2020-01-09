@@ -28,7 +28,7 @@ fn ham_cycle(snake: Vector2Array) -> Option<Vector2Array> {
 			true
 		}
 
-		let vertices : i32 = BOARD_X * BOARD_Y - 1;
+		let vertices : i32 = BOARD_X * BOARD_Y - snake.len() + 1;
 
 		if pos == vertices {
 			let tail = snake.get(snake.len() - 1);
@@ -69,7 +69,7 @@ fn ham_cycle(snake: Vector2Array) -> Option<Vector2Array> {
 	}
 
 	let mut path : Vector2Array = Vector2Array::new();
-	path.resize(BOARD_X * BOARD_Y - 1);
+	path.resize(BOARD_X * BOARD_Y - snake.len() + 1);
 	path.set(0, &snake.get(0));
 	if util(&mut path, 1, &snake) {
 		let mut new = Vector2Array::new();
